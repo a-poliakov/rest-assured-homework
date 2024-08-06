@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.example.utils.Constants.BASE_URL;
+import static org.example.utils.Constants.SUCCESS_CODE;
 
 public class SimpleTest {
     static RequestSpecification requestSpecification;
@@ -31,6 +32,6 @@ public class SimpleTest {
                 .given()
                     .get("/petclinic")
                 .then()
-                    .statusCode(200);
+                    .statusCode(SUCCESS_CODE);
     }
 }
