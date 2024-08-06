@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: ghcr.io/a-poliakov/spring-vet-clinic-rest-docker:ci
+      image: ghcr.io/a-poliakov/spring-pet-clinic:ci
       ports:
           - 9966:9966
     
