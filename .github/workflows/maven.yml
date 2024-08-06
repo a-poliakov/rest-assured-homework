@@ -29,8 +29,8 @@ jobs:
       uses: actions/setup-java@v2
       with:
           java-version: '17'
-          distribution: 'temurin'
-          cache: maven
+          distribution: 'liberica'
+          cache: 'maven'
     - name: Set up Maven
       uses: stCarolas/setup-maven@v5
       with:
