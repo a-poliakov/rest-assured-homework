@@ -26,5 +26,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - run: chmod +x mvnw
+    - run: curl -I http://localhost:9966
     - name: 'Maven build and test'
       run: ./mvnw -B install --file pom.xml
