@@ -22,7 +22,7 @@ jobs:
       backend:
         image: ghcr.io/a-poliakov/spring-pet-clinic:ci
         ports:
-          - 9966
+          - 9966:9966
     
     steps:
     - uses: actions/checkout@v3
