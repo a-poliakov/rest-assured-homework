@@ -26,4 +26,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - run: chmod +x mvnw
-    - run: ./mvnw -B install test --file pom.xml
+    - name: 'Maven build'
+      run: ./mvnw -B install --file pom.xml
+    - name: 'Maven test'
+      run: ./mvnw test --file pom.xml
