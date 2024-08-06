@@ -18,9 +18,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    container:
-      image: ghcr.io/a-poliakov/spring-pet-clinic:ci
-      ports:
+    services:
+      backend:
+        image: ghcr.io/a-poliakov/spring-pet-clinic:ci
+        ports:
           - 9966
     
     steps:
