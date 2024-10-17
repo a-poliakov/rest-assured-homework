@@ -1,0 +1,5 @@
+
+{
+  "className": "org.springframework.web.servlet.resource.NoResourceFoundException",
+  "exMessage": "No static resource api."
+}

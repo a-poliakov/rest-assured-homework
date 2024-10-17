@@ -1,0 +1,29 @@
+{
+  "$id": "https://example.com/person.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Status",
+  "type": "array",
+  "items" : {
+    "type" : "object",
+    "properties" : {
+      "firstName" : {
+        "type" : ["string", "null"]
+      },
+      "lastName" : {
+        "type" : ["string", "null"]
+      },
+      "address" : {
+        "type" : "string"
+      },
+      "city" : {
+        "type" : "string"
+      },
+      "telephone" : {
+        "type" : "string"
+      },
+      "id" : {
+        "type" : "integer"
+      }
+    }
+  }
+}
