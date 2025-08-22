@@ -40,7 +40,7 @@ public class SimpleTest {
 
     private static void createTestData() {
         // Создаем пользователя
-        testUsername = "testuser_" + System.currentTimeMillis();
+        testUsername = "testuser_";
         Map<String, Object> userPayload = new HashMap<>();
         userPayload.put("username", testUsername);
         userPayload.put("password", "testpass123");
