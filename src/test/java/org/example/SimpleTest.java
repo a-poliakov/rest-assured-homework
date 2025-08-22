@@ -40,7 +40,7 @@ public class SimpleTest {
 
     private static void createTestData() {
         // Создаем пользователя
-        testUsername = "testuser_";
+        testUsername = "testuser_" + UUID.randomUUID().toString().substring(0, 4);
         Map<String, Object> userPayload = new HashMap<>();
         userPayload.put("username", testUsername);
         userPayload.put("password", "testpass123");
@@ -55,20 +55,20 @@ public class SimpleTest {
                 .statusCode(anyOf(is(HTTP_OK), is(HTTP_CREATED)));
 
         // Создаем владельца
-        testOwnerId = createOwner("Иван", "Петров", "ул. Ленина 1", "Москва", "1234567890");
+        testOwnerId = createOwner("John", "Smith", "123 Main St", "New York", "1234567890");
         
         // Создаем тип питомца
-        testPetTypeId = createPetType("кот");
+        testPetTypeId = createPetType("cat");
         
         // Создаем питомца
         LocalDate petBirthDate = LocalDate.now().minusYears(2);
-        testPetId = createPet(testOwnerId, "Мурзик", petBirthDate, testPetTypeId);
+        testPetId = createPet(testOwnerId, "Fluffy", petBirthDate, testPetTypeId);
         
         // Создаем специализацию ветеринара
-        testSpecialtyId = createSpecialty("терапия");
+        testSpecialtyId = createSpecialty("therapy");
         
         // Создаем ветеринара
-        testVetId = createVet("Доктор", "Айболит", List.of(testSpecialtyId));
+        testVetId = createVet("Dr", "Johnson", List.of(testSpecialtyId));
     }
 
     private static Integer createOwner(String firstName, String lastName, String address, String city, String telephone) {
@@ -106,7 +106,7 @@ public class SimpleTest {
     private static Integer createPet(Integer ownerId, String name, LocalDate birthDate, Integer petTypeId) {
         Map<String, Object> type = new HashMap<>();
         type.put("id", petTypeId);
-        type.put("name", "кот");
+        type.put("name", "cat");
         
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("name", name);
@@ -142,7 +142,7 @@ public class SimpleTest {
         for (Integer id : specialtyIds) {
             Map<String, Object> spec = new HashMap<>();
             spec.put("id", id);
-            spec.put("name", "терапия");
+            spec.put("name", "therapy");
             specialties.add(spec);
         }
         
@@ -182,11 +182,11 @@ public class SimpleTest {
                 .then()
                 .statusCode(HTTP_OK)
                 .body("id", equalTo(testPetId))
-                .body("name", equalTo("Мурзик"));
+                .body("name", equalTo("Fluffy"));
 
         // Шаг 2: Создаем запись на прием
         String visitDate = DATE_FMT.format(LocalDate.now().plusDays(1));
-        String visitDescription = "Плановый осмотр и вакцинация";
+        String visitDescription = "Regular checkup and vaccination";
         
         Map<String, Object> visitPayload = new HashMap<>();
         visitPayload.put("date", visitDate);
@@ -233,7 +233,7 @@ public class SimpleTest {
         
         Map<String, Object> visitPayload = new HashMap<>();
         visitPayload.put("date", visitDate);
-        visitPayload.put("description", "Тестовая запись");
+        visitPayload.put("description", "Test visit");
 
         given(requestSpecification)
                 .body(visitPayload)
@@ -252,8 +252,8 @@ public class SimpleTest {
                 .then()
                 .statusCode(HTTP_OK)
                 .body("size()", greaterThan(0))
-                .body("find { it.id == " + testVetId + " }.firstName", equalTo("Доктор"))
-                .body("find { it.id == " + testVetId + " }.lastName", equalTo("Айболит"));
+                .body("find { it.id == " + testVetId + " }.firstName", equalTo("Dr"))
+                .body("find { it.id == " + testVetId + " }.lastName", equalTo("Johnson"));
     }
 
     @Test
@@ -265,8 +265,8 @@ public class SimpleTest {
                 .then()
                 .statusCode(HTTP_OK)
                 .body("id", equalTo(testOwnerId))
-                .body("firstName", equalTo("Иван"))
-                .body("lastName", equalTo("Петров"))
+                .body("firstName", equalTo("John"))
+                .body("lastName", equalTo("Smith"))
                 .body("pets.size()", greaterThan(0));
     }
 
@@ -279,7 +279,7 @@ public class SimpleTest {
                 .then()
                 .statusCode(HTTP_OK)
                 .body("id", equalTo(testPetId))
-                .body("name", equalTo("Мурзик"))
-                .body("type.name", equalTo("кот"));
+                .body("name", equalTo("Fluffy"))
+                .body("type.name", equalTo("cat"));
     }
 }

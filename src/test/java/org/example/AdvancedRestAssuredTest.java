@@ -40,20 +40,20 @@ public class AdvancedRestAssuredTest {
 
     private static void createTestData() {
         // Создаем владельца
-        ownerId = createOwner("Анна", "Сидорова", "ул. Пушкина 10", "Санкт-Петербург", "9876543210");
+        ownerId = createOwner("Anna", "Sidorova", "10 Pushkin St", "Saint Petersburg", "9876543210");
         
         // Создаем тип питомца
-        petTypeId = createPetType("собака");
+        petTypeId = createPetType("dog");
         
         // Создаем питомца
         LocalDate petBirthDate = LocalDate.now().minusYears(1);
-        petId = createPet(ownerId, "Бобик", petBirthDate, petTypeId);
+        petId = createPet(ownerId, "Buddy", petBirthDate, petTypeId);
         
         // Создаем специализацию
-        specialtyId = createSpecialty("хирургия");
+        specialtyId = createSpecialty("surgery");
         
         // Создаем ветеринара
-        vetId = createVet("Мария", "Иванова", List.of(specialtyId));
+        vetId = createVet("Maria", "Ivanova", List.of(specialtyId));
     }
 
     private static Integer createOwner(String firstName, String lastName, String address, String city, String telephone) {
@@ -91,7 +91,7 @@ public class AdvancedRestAssuredTest {
     private static Integer createPet(Integer ownerId, String name, LocalDate birthDate, Integer petTypeId) {
         Map<String, Object> type = new HashMap<>();
         type.put("id", petTypeId);
-        type.put("name", "собака");
+        type.put("name", "dog");
         
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("name", name);
@@ -127,7 +127,7 @@ public class AdvancedRestAssuredTest {
         for (Integer id : specialtyIds) {
             Map<String, Object> spec = new HashMap<>();
             spec.put("id", id);
-            spec.put("name", "хирургия");
+            spec.put("name", "surgery");
             specialties.add(spec);
         }
         
@@ -169,8 +169,8 @@ public class AdvancedRestAssuredTest {
                 .findFirst();
         
         Assertions.assertTrue(testOwner.isPresent(), "Тестовый владелец должен быть найден");
-        Assertions.assertEquals("Анна", testOwner.get().get("firstName"));
-        Assertions.assertEquals("Сидорова", testOwner.get().get("lastName"));
+        Assertions.assertEquals("Anna", testOwner.get().get("firstName"));
+        Assertions.assertEquals("Sidorova", testOwner.get().get("lastName"));
     }
 
     @Test
@@ -178,12 +178,12 @@ public class AdvancedRestAssuredTest {
     void testQueryParameters() {
         // Получаем владельцев с фильтрацией по фамилии
         given(requestSpecification)
-                .queryParam("lastName", "Сидорова")
+                .queryParam("lastName", "Sidorova")
                 .when()
                 .get("/owners")
                 .then()
                 .statusCode(HTTP_OK)
-                .body("find { it.lastName == 'Сидорова' }.firstName", equalTo("Анна"));
+                .body("find { it.lastName == 'Sidorova' }.firstName", equalTo("Anna"));
     }
 
     @Test
@@ -196,9 +196,9 @@ public class AdvancedRestAssuredTest {
                 .then()
                 .statusCode(HTTP_OK)
                 .body("id", equalTo(petId))
-                .body("name", equalTo("Бобик"))
+                .body("name", equalTo("Buddy"))
                 .body("type.id", equalTo(petTypeId))
-                .body("type.name", equalTo("собака"))
+                .body("type.name", equalTo("dog"))
                 .body("birthDate", notNullValue())
                 .body("visits", notNullValue());
     }
@@ -208,9 +208,9 @@ public class AdvancedRestAssuredTest {
     void testMultipleVisitsCreation() {
         // Создаем несколько записей на прием
         String[] descriptions = {
-            "Плановый осмотр",
-            "Вакцинация",
-            "Консультация по питанию"
+            "Regular checkup",
+            "Vaccination",
+            "Nutrition consultation"
         };
         
         for (int i = 0; i < descriptions.length; i++) {
@@ -276,7 +276,7 @@ public class AdvancedRestAssuredTest {
         // Этот тест демонстрирует использование form data (хотя API использует JSON)
         given(requestSpecification)
                 .contentType(ContentType.URLENC)
-                .formParam("name", "тестовая специализация")
+                .formParam("name", "test specialty")
                 .when()
                 .post("/specialties")
                 .then()
@@ -289,7 +289,7 @@ public class AdvancedRestAssuredTest {
         // Демонстрация multipart (хотя API не поддерживает загрузку файлов)
         given(requestSpecification)
                 .contentType(ContentType.MULTIPART)
-                .multiPart("name", "тестовая специализация")
+                .multiPart("name", "test specialty")
                 .when()
                 .post("/specialties")
                 .then()
@@ -338,8 +338,8 @@ public class AdvancedRestAssuredTest {
                 .get("/owners/{ownerId}", ownerId)
                 .then()
                 .statusCode(HTTP_OK)
-                .body("firstName", startsWith("А"))
-                .body("lastName", endsWith("ва"))
+                .body("firstName", startsWith("A"))
+                .body("lastName", endsWith("va"))
                 .body("telephone", matchesPattern("\\d{10}"))
                 .body("pets.size()", greaterThan(0));
     }
